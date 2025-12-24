@@ -2,7 +2,7 @@
 using namespace std;
 
 int main() {
-    cout<<"Hello World!!!";
+    bool flag = 0; 
 
-    return 0;
+    cout<<flag<<endl;
 }

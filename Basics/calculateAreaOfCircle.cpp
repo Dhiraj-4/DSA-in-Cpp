@@ -2,7 +2,7 @@
 using namespace std;
 
 int main() {
-    cout<<"Hello World!!!";
+    float r = 8, pi = 3.1415;
 
-    return 0;
+    cout<<pi*r*r<<endl;
 }
