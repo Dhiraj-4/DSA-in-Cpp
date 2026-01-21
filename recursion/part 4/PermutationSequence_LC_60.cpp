@@ -1,31 +1,33 @@
 #include<iostream>
 #include<string>
-#include<vector>
 using namespace std;
 
-int factorial(int n) {
+string helper(string str, int k, string ans) {
+    int n = str.length();
+    if(n==0) return ans;
+
     int fact = 1;
-    for(int i = 2; i <= n; i++) fact *= i;
-    return fact;
-}
-void getPermutations(
-    int n, string ans, int k
-) {
-    if(0 == n) {
-        cout<<ans<<endl;
-        return;
+    for(int i = 2; i <= (n-1); i++) {
+        fact *= i;
     }
 
-    int blockIndex = (k-1) / factorial(n-1) + 1;
-    cout<<blockIndex<<endl;
-    getPermutations(n-1, ans+to_string(blockIndex), k);
+    int idx = k/fact;
+    if(k%fact == 0) idx--;
+    char ch = str[idx];
+    string left = str.substr(0, idx);
+    string right = str.substr(idx+1);
+    int q = 1;
+    if(k % fact == 0) q = fact;
+    else q = k % fact;
+    return helper(left+right, q, ans+ch);
 }
 int main() {
     int n = 3;
-    int k = 3;
-    vector<bool> taken(n+1, false);
-    int end = factorial(n);
-    getPermutations(n, "", k);
+    int k = 2;
 
-    // cout<<res[0]<<endl;
+    string str = "";
+    for(int i = 1; i <= n; i++) {
+        str += to_string(i);
+    }
+    cout<<helper(str, k, "")<<endl;
 }
