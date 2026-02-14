@@ -28,4 +28,5 @@ int main() {
 
     cout<<setBits(n)<<endl;
     cout<<getSetBits(n)<<endl;
+    cout<<__builtin_popcount(n);
 }
