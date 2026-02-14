@@ -1,15 +1,31 @@
 #include<iostream>
 using namespace std;
-int main() {
-    int n = 2;
+int setBits(int num) {
+    if(num == 0) return 0;
+
+    int sb = 0;
+    while(num) {
+        sb++;
+        num = (num & (num-1));
+    }
+    return sb;
+}
+
+int getSetBits(int num) {
+    if(num == 0) return 0;
 
     int setBits = 0;
 
-    while(n) {
-        if( (n & 1) == 0) setBits++;
-        n = (n >> 1);
+    while(num) {
+        setBits += (num & 1);
+        num = (num >> 1);
     }
- 
-    cout<<setBits<<endl;
-    cout<<__builtin_popcount(2)<<endl;
+
+    return setBits;
+}
+int main() {
+    int n = 9;
+
+    cout<<setBits(n)<<endl;
+    cout<<getSetBits(n)<<endl;
 }
