@@ -32,22 +32,38 @@ using namespace std;
         // -3 -3 -7 -7 -7 -1 -2
 
         int n = nums.size();
-        vector<int> ans;
 
         vector<int> negPositions;
 
-        int idx = -1;
-        int i = 0;
-        int j = 0;
+        for(int i = 0; i < n; i++) {
+            if(nums[i] < 0) negPositions.push_back(i);
+        }
+        
+        vector<int> ans;
 
+        int idx = 0;
+        int i = 0;
+        int j = k-1;
+        
         while(j < n) {
-            
+            if(negPositions[idx] < i) idx++;
+            else if(i <= negPositions[idx] && negPositions[idx] <= j) 
+                ans.push_back(nums[negPositions[idx]]);
+
+            i++;
+            j++;
         }
 
         return ans;
     }
 
-    int main() {
+    int main() { 
+        //                      m
+        // negPositions = 1 4 5 7
+
+        // -3 -3 -7 -7 -7 -1 -2
+        //                                            i      j
+        //                   0   1  2  3   4   5  6   7  8
         vector<int> nums = { 2, -3, 4, 4, -7, -1, 4, -2, 6 }; // 1 <= n <= 10^5
                         // -3 -3 -7 -7 -7 -1 -2
                 // nums = { 2, 3, 4, 5, 6, -2, 4, 4, 6, -1, -4, 3, 4 };
@@ -56,5 +72,5 @@ using namespace std;
 
     vector<int> res = firstNegOfEveryWindow(nums, k);
 
-    for(int i = res.size()-1; i >= 0; i--) cout<<res[i]<<" ";
+    for(int i = 0; i < res.size(); i++) cout<<res[i]<<" ";
 }
