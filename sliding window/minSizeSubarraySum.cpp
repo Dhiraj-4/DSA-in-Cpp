@@ -64,7 +64,34 @@ using namespace std;
         if(minLen == INT_MAX) return 0;
         return minLen;
     }
+
+    int minSubArrayLen3(int target, vector<int>& nums) {
+        int n = nums.size();
+
+        int minLen = INT_MAX;
+        int sum = 0;
+        int i = 0;
+        int j = 0;
+
+        while(j < n) {
+            sum += nums[j];
+
+            while(sum >= target) {
+                minLen = min(minLen, j-i+1);
+                sum -= nums[i];
+                i++;
+            }
+            j++;
+        }
+
+        if(minLen == INT_MAX) return 0;
+        return minLen;
+    }
+
 int main() {
     int target = 7; 
     vector<int> nums = {2,3,1,2,4,3};
+
+    cout<<minSubArrayLen2(target, nums)<<endl;
+    cout<<minSubArrayLen3(target, nums)<<endl;
 }

@@ -3,75 +3,70 @@
 using namespace std;
     // first try (messy and redundent code) but solved it without help;
 
-    // int maxSatisfied(vector<int>& customers, vector<int>& grumpy, int minutes) {
-    //     //              0 1 2 3 4 5 6 7
-    //     // customers = [1,0,1,2,1,1,7,5]
-    //     // grumpy =    [1,1,0,1,0,0,0,0]
-    //     // minutes = 3  1 0 1 2 1 1 7 5 = 18
-    //     int n = customers.size();
-    //     int maxValueWindowIdx = 0;
-    //     int maxValue = 0;
-    //     int sum = 0;
-    //     for(int i = 0; i < n; i++) {
-    //         if(grumpy[i]) sum += customers[i];
+    int maxSatisfied1(vector<int>& customers, vector<int>& grumpy, int minutes) {
+        //              0 1 2 3 4 5 6 7
+        // customers = [1,0,1,2,1,1,7,5]
+        // grumpy =    [1,1,0,1,0,0,0,0]
+        // minutes = 3  1 0 1 2 1 1 7 5 = 18
+        int n = customers.size();
+        int maxValueWindowIdx = 0;
+        int maxValue = 0;
+        int sum = 0;
+        for(int i = 0; i < n; i++) {
+            if(grumpy[i]) sum += customers[i];
 
-    //         if(i >= minutes && grumpy[i-minutes]) sum -= customers[i-minutes];
-    //         if(i >= minutes-1 && maxValue <= sum) {
-    //             maxValue = sum;
-    //             maxValueWindowIdx = i+1-minutes;
-    //             cout<<"maxValueWindowIdx :"<<maxValueWindowIdx<<endl;
-    //         } 
-    //     }
-    //     cout<<maxValue<<" "<<maxValueWindowIdx<<endl;
-    //     sum = 0;
+            if(i >= minutes && grumpy[i-minutes]) sum -= customers[i-minutes];
+            if(i >= minutes-1 && maxValue <= sum) {
+                maxValue = sum;
+                maxValueWindowIdx = i+1-minutes;
+            } 
+        }
+        sum = 0;
 
-    //     for(int i = 0; i < n; i++) {
-    //         if(i >= maxValueWindowIdx && minutes != 0) {
-    //             sum += customers[i];
-    //             minutes -= 1;
-    //         }else if(grumpy[i] == 0) sum += customers[i];
-    //     }
+        for(int i = 0; i < n; i++) {
+            if(i >= maxValueWindowIdx && minutes != 0) {
+                sum += customers[i];
+                minutes -= 1;
+            }else if(grumpy[i] == 0) sum += customers[i];
+        }
 
-    //     return sum;
-    // }
-
-
-
+        return sum;
+    }
 
     // second try better but still redudent
 
-    // int maxSatisfied(vector<int>& customers, vector<int>& grumpy, int minutes) {
-    //     int n = customers.size();
+    int maxSatisfied2(vector<int>& customers, vector<int>& grumpy, int minutes) {
+        int n = customers.size();
 
-    //     int maxTotalValue = 0;
-    //     int lostWindowValue = 0;
-    //     int maxLostWindowIdx = 0;
-    //     int maxLostValue = 0;
+        int maxTotalValue = 0;
+        int lostWindowValue = 0;
+        int maxLostWindowIdx = 0;
+        int maxLostValue = 0;
 
-    //     for(int i = 0; i < n; i++) {
-    //         if(grumpy[i] == 0) maxTotalValue += customers[i];
-    //         else lostWindowValue += customers[i];
+        for(int i = 0; i < n; i++) {
+            if(grumpy[i] == 0) maxTotalValue += customers[i];
+            else lostWindowValue += customers[i];
 
-    //         if(i >= minutes && grumpy[i-minutes]) lostWindowValue -= customers[i-minutes];
+            if(i >= minutes && grumpy[i-minutes]) lostWindowValue -= customers[i-minutes];
 
-    //         if(i >= minutes-1 && maxLostValue <= lostWindowValue) {
-    //             maxLostValue = lostWindowValue;
-    //             maxLostWindowIdx = i-(minutes-1);
-    //         }
-    //     }
+            if(i >= minutes-1 && maxLostValue <= lostWindowValue) {
+                maxLostValue = lostWindowValue;
+                maxLostWindowIdx = i-(minutes-1);
+            }
+        }
 
-    //     cout<<"maxLostWindowIdx : "<<maxLostWindowIdx<<" "<<endl;
-    //     cout<<"maxTotalValue : "<<maxTotalValue<<endl;
-    //     // not required
-    //     for(int j = maxLostWindowIdx; j < maxLostWindowIdx + (minutes); j++) {
-    //         if(grumpy[j] == 1) maxTotalValue += customers[j];
-    //     }
+        cout<<"maxLostWindowIdx : "<<maxLostWindowIdx<<" "<<endl;
+        cout<<"maxTotalValue : "<<maxTotalValue<<endl;
+        // not required
+        for(int j = maxLostWindowIdx; j < maxLostWindowIdx + (minutes); j++) {
+            if(grumpy[j] == 1) maxTotalValue += customers[j];
+        }
         
-    //     return maxTotalValue;
-    // }
+        return maxTotalValue;
+    }
 
     // third try cleanest
-    int maxSatisfied(vector<int>& customers, vector<int>& grumpy, int minutes) {
+    int maxSatisfied3(vector<int>& customers, vector<int>& grumpy, int minutes) {
         int n = customers.size();
 
         int maxTotalValue = 0;
@@ -89,11 +84,43 @@ using namespace std;
         
         return maxTotalValue + maxLostValue;
     }
-int main() {
+
+    int maxSatisfied4(vector<int>& customers, vector<int>& grumpy, int minutes) {
+        int n = customers.size();
+
+        int maxValue = 0;
+        int lostValue = 0;
+        int maxLostValue = 0;
+
+        int i = 0; 
+
+        for(int j = 0; j < n; j++) {
+            if(grumpy[j] == 0) maxValue += customers[j];
+
+            if(grumpy[j]) lostValue += customers[j];
+
+            if(j-i+1 > minutes) {
+                if(grumpy[i]) lostValue -= customers[i];
+                i++;
+            }
+
+            maxLostValue = max(lostValue, maxLostValue);
+        }
+
+        return maxValue + maxLostValue;
+    }
+
+    int main() {
     //                       0 1 2 3 4 5 6 7
     vector<int> customers = {1,0,1,2,1,1,7,5};
     vector<int> grumpy =    {0,1,0,1,1,1,0,0};
     int minutes = 3;      // 1 0 1 0 0 0 7 5 = 14 + (2 + 1 + 1)-> lost satisfaction
 
-    cout<<maxSatisfied(customers, grumpy, minutes);
+    cout<<"Solution 1"<<endl;
+    cout<<maxSatisfied1(customers, grumpy, minutes);
+
+    cout<<endl;
+
+    cout<<"Solution 4"<<endl;
+    cout<<maxSatisfied4(customers, grumpy, minutes);
 }

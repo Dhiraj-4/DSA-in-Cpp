@@ -57,11 +57,33 @@ using namespace std;
 
         return maxLen;
     }
-int main() {
+
+    int longestOnes3(vector<int>& nums, int k) {
+        int n = nums.size();
+
+        int i = 0, j = 0, zeros = 0, maxLen = 0;
+
+        while(j < n) {
+            if(nums[j] == 0) zeros++;
+
+            while(zeros > k) {
+                if(nums[i] == 0) zeros--;
+                i++;
+            }
+
+            maxLen = max(maxLen, j-i+1);
+            j++;
+        }
+
+        return maxLen;
+    }
+
+    int main() {
     vector<int> nums = {0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1}; 
     
     int k = 3;
 
     cout<<longestOnes(nums, k)<<endl;
     cout<<longestOnes2(nums, k)<<endl;
+    cout<<longestOnes3(nums, k)<<endl;
 }
