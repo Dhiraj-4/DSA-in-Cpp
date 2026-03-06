@@ -2,12 +2,45 @@
 #include<vector>
 using namespace std;
 
+class Gun {
+    public: 
+        int ammo;
+        int damage;
+        int scope;
+};
+
 class Player {
     private:
+        class Helmet {
+            private:
+                int hp;
+                int level;
+
+            public: 
+                Helmet& setHp(int hp) {
+                    this->hp = hp;
+                    return *this;
+                }
+
+                Helmet& setLevel(int level) {
+                    this->level = level;
+                    return *this;
+                }
+
+                int getHp() {
+                    return this->hp;
+                }
+
+                int getLevel() {
+                    return this->level;
+                }
+        };
         int health = 100;
         int age = 18;
         int score = 0;
-        int isAlive = true;
+        bool isAlive = true;
+        Gun gun;
+        Helmet helmet;
 
     public:
         // getters
@@ -22,33 +55,11 @@ class Player {
         int getScore() {
             return this->score;
         }
-
+        
         bool getIsAlive() {
             return this->isAlive;
         }
-
-        // setters
-        Player* setHealth(int health) {
-            this->health = health;
-            return this;
-        }
-
-        Player* setAge(int age) {
-            this->age = age;
-            return this;
-        }
-
-        Player* setScore(int score) {
-            this->score = score;
-            return this;
-        }
-
-        Player* setIsAlive(bool isAlive) {
-            this->isAlive = isAlive;
-            (*this).isAlive = isAlive; // "->" is same as (*this) , this->age  ≡  (*this).age
-            return this;
-        }
-
+        
         void getPlayerAddress() {
             cout<<this<<endl; // this works
             cout<<this->age<<endl;
@@ -60,6 +71,48 @@ class Player {
             cout<<(*this).age<<endl;
 
         }
+
+        Gun& getGun() {
+            return gun;
+        }
+
+        // setters
+        Player& setHealth(int health) {
+            this->health = health;
+            return *this;
+        }
+
+        Player& setAge(int age) {
+            this->age = age;
+            return *this;
+        }
+
+        Player& setScore(int score) {
+            this->score = score;
+            return *this;
+        }
+
+        Player& setIsAlive(bool isAlive) {
+            this->isAlive = isAlive;
+            (*this).isAlive = isAlive; // "->" is same as (*this) , this->age  ≡  (*this).age
+            return *this;
+        }
+
+        Player& setHelmet(int level) {
+            Helmet *helmet = new Helmet;
+            
+
+            int health = 0;
+
+            if(level == 1) health = 25;
+            else if(level == 2) health = 65;
+            else if(level == 3) health = 90;
+
+            helmet->setLevel(level).setHp(health);
+
+            this->helmet = *helmet;
+        }
+
 };
 
 Player& getMaxScorePlayer(Player* a, Player* b) {
@@ -78,7 +131,7 @@ int main() {
     cout<<"Score : "<<aman.getScore()<<endl<<endl;;
 
 
-    aman.setAge(21)->setHealth(200)->setIsAlive(true)->setScore(2);
+    aman.setAge(21).setHealth(200).setIsAlive(true).setScore(2);
 
     cout<<"After update set values."<<endl<<endl;
 
@@ -89,7 +142,7 @@ int main() {
 
     Player harsh;
 
-    aman.setAge(24)->setHealth(165)->setIsAlive(true)->setScore(65);
+    aman.setAge(24).setHealth(165).setIsAlive(true).setScore(65);
 
     Player maxScorePlayer = getMaxScorePlayer(&aman, &harsh);
 
